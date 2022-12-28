@@ -10,7 +10,7 @@ class Configure:
 			self.config['General'] = {
 				'from': 'English',
 				'to': 'Russian',
-				'translator': 'google'
+				'translator': 'Google'
 			}
 			self.config['Font'] = {
 				'font': 'Calibri',
