@@ -105,7 +105,7 @@ def end_screen_shot():
 		os.system('cls')
 
 		lang = str(Settings_UI.langs[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
-		text = '\n'.join(text_recognition(image_path, [lang])) # Получаю текст с изображения
+		text = ' '.join(text_recognition(image_path, [lang])) # Получаю текст с изображения
 
 		if config.read('Output', 'original') == '1':
 			print(f'\n{text}')
