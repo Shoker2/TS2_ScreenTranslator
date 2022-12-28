@@ -1,5 +1,6 @@
 venv/
 img/
+add after create exe/
 !img/icon.png
 test.py
 Tray.py
