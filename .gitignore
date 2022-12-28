@@ -1,0 +1,7 @@
+venv/
+img/
+!img/icon.png
+test.py
+Tray.py
+config.ini
+log_records.csv
