@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>349</width>
+    <width>379</width>
     <height>118</height>
    </rect>
   </property>
@@ -31,12 +31,12 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>351</width>
+      <width>381</width>
       <height>121</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>4</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
@@ -130,7 +130,7 @@
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
+        <pointsize>9</pointsize>
        </font>
       </property>
      </widget>
@@ -259,6 +259,90 @@
        <font>
         <pointsize>10</pointsize>
        </font>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="Output_page">
+     <attribute name="title">
+      <string>Output</string>
+     </attribute>
+     <widget class="QCheckBox" name="windowOutput">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>5</y>
+        <width>211</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Output to the window</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="consoleOutput">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>35</y>
+        <width>211</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Output to the console</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="clipboardOutput">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>65</y>
+        <width>211</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Output to the clipboard</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="originalOutput">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>40</y>
+        <width>141</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Output original
+to console</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
       </property>
      </widget>
     </widget>

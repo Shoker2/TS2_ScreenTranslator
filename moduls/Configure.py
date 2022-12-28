@@ -20,7 +20,16 @@ class Configure:
 				'select_area': 'alt+z',
 				'repeat_area': 'alt+x'
 			}
-			self.config['Change_list'] = {}
+
+			self.config['Output'] = {
+				'window': '1',
+				'console': '0',
+				'clipboard': '0',
+				'original': '0'
+			}
+			self.config['Change_list'] = {
+				
+			}
 
 			self.write()
 			

@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PIL import Image
 import keyboard
+import pyperclip
 
 import traceback
 import sys
@@ -15,7 +16,7 @@ from moduls.Settings import Ui_Settings
 from moduls.Configure import Configure
 from moduls.Logger import Logger
 
-logger = Logger('log_records.csv')
+logger = Logger('log_records.csv') # Логирование
 logger.logging.info('Starting')
 
 class Settings(Ui_Settings):
@@ -39,6 +40,11 @@ class Settings(Ui_Settings):
 			
 			config.update('Shortcuts', 'select_area', returned_settings['selecet_area'])
 			config.update('Shortcuts', 'repeat_area', returned_settings['repeat_area'])
+
+			config.update('Output', 'window', returned_settings['Output_window'])
+			config.update('Output', 'console', returned_settings['Output_console'])
+			config.update('Output', 'clipboard', returned_settings['Output_clipboard'])
+			config.update('Output', 'original', returned_settings['Output_original'])
 
 			return super().apply(Settings)
 		else:
@@ -77,15 +83,27 @@ class SnippingWidget(Snipper):
 		Settings_UI.selecetAreaKeySequenceEdit.setKeySequence(QtGui.QKeySequence(config.read('Shortcuts', 'select_area')))
 		Settings_UI.repeatAreaKeySequenceEdit.setKeySequence(QtGui.QKeySequence(config.read('Shortcuts', 'repeat_area')))
 
+		Settings_UI.windowOutput.setChecked(bool(int(config.read('Output', 'window'))))
+		Settings_UI.consoleOutput.setChecked(bool(int(config.read('Output', 'console'))))
+		Settings_UI.clipboardOutput.setChecked(bool(int(config.read('Output', 'clipboard'))))
+		Settings_UI.originalOutput.setChecked(bool(int(config.read('Output', 'original'))))
+
 @logger.logging_function
 def end_screen_shot():
 	Settings_win.hide()
-	open_screen = True
+	if config.read('Output', 'window') == '1':
+		open_screen = True	# Переменная для определения, открывать окно с выводом или нет
+	else:
+		open_screen = False
+
 	try:
+		os.system('cls')
+
 		lang = str(Settings_UI.langs[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
 		text = ' '.join(text_recognition(image_path, [lang])) # Получаю текст с изображения
 
-		print(f'\n{text}')
+		if config.read('Output', 'original') == '1':
+			print(f'\n{text}')
 		
 		if config.read('General', 'to') != config.read('General', 'from'): # Если перевод нужен на другой язык, то перевожу
 			translated = Translator.translate(text, Settings_UI.langs[config.read('General', 'to')], lang, config.read('General', 'translator'))
@@ -107,6 +125,12 @@ def end_screen_shot():
 	Output_Ui.setText(translated, int(config.read('Font', 'font_size')), config.read('Font', 'font'))
 	Output_Ui.resize(width, height)
 	Output_Ui.move(snipper.img_x1, snipper.img_y1)
+
+	if config.read('Output', 'console') == '1':
+		print(translated)
+	
+	if config.read('Output', 'clipboard') == '1':
+		pyperclip.copy(translated)
 
 	if open_screen:
 		Output_Ui.show()
