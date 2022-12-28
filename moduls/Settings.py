@@ -219,10 +219,6 @@ class Ui_Settings(object):
 			return None
 	
 	def set_comboboxs(self):
-		self.translatorComboBox.addItem("Google")
-		self.translatorComboBox.addItem("Pons")
-		self.translatorComboBox.addItem("Mymemory")
-
 		for lang in self.langs.keys():
 			self.toComboBox.addItem(lang)
 			self.fromComboBox.addItem(lang)

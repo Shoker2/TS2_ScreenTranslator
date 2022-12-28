@@ -20,6 +20,13 @@ logger.logging.info('Starting')
 
 class Settings(Ui_Settings):
 	@logger.logging_function
+	def set_comboboxs(self):
+		for translator in Translator.translators:
+			self.translatorComboBox.addItem(translator)
+
+		return super().set_comboboxs()
+
+	@logger.logging_function
 	def apply(self, Settings):
 		returned_settings = self.get_all()
 		if returned_settings['repeat_area'] != None and returned_settings['selecet_area'] != None:
@@ -77,16 +84,20 @@ def end_screen_shot():
 	try:
 		lang = str(Settings_UI.langs[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
 		text = ' '.join(text_recognition(image_path, [lang])) # Получаю текст с изображения
+
+		print(f'\n{text}')
+		
 		if config.read('General', 'to') != config.read('General', 'from'): # Если перевод нужен на другой язык, то перевожу
 			translated = Translator.translate(text, Settings_UI.langs[config.read('General', 'to')], lang, config.read('General', 'translator'))
 		else:
 			translated = text
 	except (FileNotFoundError, ConnectionError):
+		logger.logging.error(traceback.format_exc().replace('"', '\''))
 		translated = 'None'	
 		open_screen = False
 		global first_screenshot
 		first_screenshot = False
-	
+
 	try:
 		img = Image.open(image_path)
 		width, height = img.size
@@ -131,8 +142,11 @@ def repeat_area():
 @logger.logging_function
 def main():
 	try:
+		sys.setrecursionlimit(1000)
+
 		if not os.path.isdir('./img'):
 			os.mkdir('./img')
+		
 		global image_path, bg_path, icon_path
 		image_path = './img/Image.png'
 		bg_path = './img/bg.png'
