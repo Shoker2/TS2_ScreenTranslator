@@ -3,6 +3,8 @@ import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QShortcut
 from PIL import ImageGrab
 from win32api import GetSystemMetrics
 
@@ -29,6 +31,9 @@ class SnippingWidget(QtWidgets.QMainWindow):
 		self.squareThickness = 2
 
 		self.image_path = image_path
+
+		self.close_shortcut = QShortcut(QKeySequence("Esc"), self) # Выход при 'esc'
+		self.close_shortcut.activated.connect(self.close)
 
 		self.start_point = QtCore.QPoint()
 		self.end_point = QtCore.QPoint()
