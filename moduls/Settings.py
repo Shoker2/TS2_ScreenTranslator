@@ -10,7 +10,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_Settings(object):
 	langs = {
 		'Arabic': 'ar',
@@ -41,13 +40,13 @@ class Ui_Settings(object):
 		Settings.setWindowFlags(QtCore.Qt.FramelessWindowHint| QtCore.Qt.WindowStaysOnTopHint) # Делаю окно без границ и кнопок (свернуть и т.д.). А также делаю поверх всех окно
 
 		Settings.setObjectName("Settings")
-		Settings.resize(379, 118)
+		Settings.resize(380, 118)
 		Settings.setMinimumSize(QtCore.QSize(0, 0))
 		Settings.setMaximumSize(QtCore.QSize(99999, 99999))
 		self.centralwidget = QtWidgets.QWidget(Settings)
 		self.centralwidget.setObjectName("centralwidget")
 		self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-		self.tabWidget.setGeometry(QtCore.QRect(0, 0, 381, 121))
+		self.tabWidget.setGeometry(QtCore.QRect(0, 0, Settings.size().width(), Settings.size().height()))
 		self.tabWidget.setTabBarAutoHide(False)
 		self.tabWidget.setObjectName("tabWidget")
 		self.general_page = QtWidgets.QWidget()
@@ -160,11 +159,12 @@ class Ui_Settings(object):
 		self.change_list_page = QtWidgets.QWidget()
 		self.change_list_page.setObjectName("change_list_page")
 		self.tableWidget = QtWidgets.QTableWidget(self.change_list_page)
-		self.tableWidget.setGeometry(QtCore.QRect(0, 0, 381, 91))
+		self.tableWidget.setGeometry(QtCore.QRect(0, 0, Settings.size().width(), 91))
 		self.tableWidget.setObjectName("tableWidget")
 		self.tableWidget.setColumnCount(2)
 		self.tableWidget.setRowCount(1)
 		item = QtWidgets.QTableWidgetItem()
+		item.setText("1")
 		self.tableWidget.setVerticalHeaderItem(0, item)
 		item = QtWidgets.QTableWidgetItem()
 		item.setText("Source")
@@ -175,6 +175,12 @@ class Ui_Settings(object):
 		Settings.setCentralWidget(self.centralwidget)
 
 		self.pushButton.clicked.connect(lambda: self.apply(Settings))
+		self.tableWidget.cellChanged.connect(lambda: self.table_changed())
+
+		cell_width = int((Settings.size().width() - 40)/2)
+		self.tableWidget.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+		self.tableWidget.setColumnWidth(0, cell_width)
+		self.tableWidget.setColumnWidth(1, cell_width)
 
 		self.retranslateUi(Settings)
 		self.tabWidget.setCurrentIndex(0)
@@ -202,9 +208,54 @@ class Ui_Settings(object):
 		self.clipboardOutput.setText("Output to the clipboard")
 		self.originalOutput.setText("Output original\nto console")
 		self.tabWidget.setTabText(self.tabWidget.indexOf(self.Output_page), ("Output"))
+	
+	def table_check_row_for_emptiness(self, row):
+		first = False
+		second = False
+
+		if self.tableWidget.item(row, 0) == None or self.tableWidget.item(row, 0).text() == '': # Если первый столбец пустой то first = true
+			first = True
+		if self.tableWidget.item(row, 1) == None or self.tableWidget.item(row, 1).text() == '': # Если второй столбец пустой то second = true
+			second = True
+			
+		if first and second: # Если оба столбца пустыне, то возвращяю True
+			return True
+		else:	# иначе False
+			return False
+
+	def table_changed(self):
+		row_count = self.tableWidget.rowCount()
+
+		if self.table_check_row_for_emptiness(row_count-1):
+			if self.table_check_row_for_emptiness(row_count-2):
+				self.tableWidget.removeRow(row_count-1)
+		else:
+			self.tableWidget.setRowCount(row_count+1)
+	
+	def set_table_from_dictionary(self, dic: dict):
+		row_count = len(dic)
+
+
+		if row_count > 0:
+			self.tableWidget.setRowCount(row_count)
+			
+			row = 0
+			for i in dic.keys():
+				item = QtWidgets.QTableWidgetItem()
+				item.setText(str(i))
+				self.tableWidget.setItem(row, 0, item)
+
+				item = QtWidgets.QTableWidgetItem()
+				item.setText(str(dic[i]))
+				self.tableWidget.setItem(row, 1, item)
+
+				row += 1
+		else:
+			self.tableWidget.setRowCount(1)
 
 	def get_all(self):
 		get = {}
+		get['correction'] = {}
 
 		sequence = self.selecetAreaKeySequenceEdit.keySequence()	# Получаю комбинацию клавишь
 		keys = str(sequence.toString(QtGui.QKeySequence.NativeText))	# Перевожу комбинацию клавишь в текстовый формат
@@ -226,6 +277,26 @@ class Ui_Settings(object):
 		get['Output_console'] = str(int(self.consoleOutput.isChecked()))
 		get['Output_clipboard'] = str(int(self.clipboardOutput.isChecked()))
 		get['Output_original'] = str(int(self.originalOutput.isChecked()))
+
+		row_count = self.tableWidget.rowCount()
+		if self.table_check_row_for_emptiness(row_count-1):
+			self.tableWidget.removeRow(row_count-1)
+	
+		for row in range(self.tableWidget.rowCount()):
+			Source = self.tableWidget.item(row, 0)
+			Changed = self.tableWidget.item(row, 1)
+
+			if Source == None:
+				Source = ''
+			else:
+				Source = Source.text()
+			
+			if Changed == None:
+				Changed = ''
+			else:
+				Changed = Changed.text()
+
+			get['correction'][Source] = Changed
 
 		return get
 	

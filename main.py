@@ -30,6 +30,7 @@ class Settings(Ui_Settings):
 	@logger.logging_function
 	def apply(self, Settings):
 		returned_settings = self.get_all()
+
 		if returned_settings['repeat_area'] != None and returned_settings['selecet_area'] != None:
 			config.update('General', 'from', returned_settings['from']) # Сохраняю все выбранные значения в конфиг файл
 			config.update('General', 'to', returned_settings['to'])
@@ -45,6 +46,8 @@ class Settings(Ui_Settings):
 			config.update('Output', 'console', returned_settings['Output_console'])
 			config.update('Output', 'clipboard', returned_settings['Output_clipboard'])
 			config.update('Output', 'original', returned_settings['Output_original'])
+
+			config.update_dictionary('Change_list', 'json', returned_settings['correction'])
 
 			return super().apply(Settings)
 		else:
@@ -88,6 +91,8 @@ class SnippingWidget(Snipper):
 		Settings_UI.clipboardOutput.setChecked(bool(int(config.read('Output', 'clipboard'))))
 		Settings_UI.originalOutput.setChecked(bool(int(config.read('Output', 'original'))))
 
+		Settings_UI.set_table_from_dictionary(config.read_dictionary('Change_list', 'json'))
+
 @logger.logging_function
 def end_screen_shot():
 	Settings_win.hide()
@@ -100,7 +105,7 @@ def end_screen_shot():
 		os.system('cls')
 
 		lang = str(Settings_UI.langs[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
-		text = ' '.join(text_recognition(image_path, [lang])) # Получаю текст с изображения
+		text = '\n'.join(text_recognition(image_path, [lang])) # Получаю текст с изображения
 
 		if config.read('Output', 'original') == '1':
 			print(f'\n{text}')
@@ -115,6 +120,8 @@ def end_screen_shot():
 		open_screen = False
 		global first_screenshot
 		first_screenshot = False
+	
+	translated = replace_from_list(translated, config.read_dictionary('Change_list', 'json'))
 
 	try:
 		img = Image.open(image_path)
@@ -162,6 +169,12 @@ def repeat_area():
 			os.remove(image_path)
 
 	app.exec_()
+
+def replace_from_list(string:str, dic: dict):
+	for key in dic.keys():
+		string = string.replace(key, dic[key])
+	
+	return string
 
 @logger.logging_function
 def main():

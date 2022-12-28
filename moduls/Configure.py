@@ -1,4 +1,5 @@
 import configparser
+import json
 import os
 
 class Configure:
@@ -28,7 +29,7 @@ class Configure:
 				'original': '0'
 			}
 			self.config['Change_list'] = {
-				
+				'json': '{}'
 			}
 
 			self.write()
@@ -37,6 +38,13 @@ class Configure:
 		
 	def read(self, section, key):
 		return self.config[section][key]
+	
+	def update_dictionary(self, section, key, dic):
+		_json = json.dumps(dic, ensure_ascii=False)
+		self.update(section, key, _json)
+	
+	def read_dictionary(self, section, key):
+		return json.loads(self.read(section, key))
 	
 	def	update(self, section, key, arg):
 		self.config[section][key] = arg
