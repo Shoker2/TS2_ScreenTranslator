@@ -1,5 +1,6 @@
 venv/
 img/
+scipy.libs/
 !img/icon.png
 test.py
 Tray.py
