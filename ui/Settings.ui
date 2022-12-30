@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>379</width>
-    <height>118</height>
+    <width>384</width>
+    <height>124</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -36,7 +36,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>3</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
@@ -266,84 +266,102 @@
      <attribute name="title">
       <string>Output</string>
      </attribute>
-     <widget class="QCheckBox" name="windowOutput">
+     <widget class="QScrollArea" name="scrollArea">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>5</y>
-        <width>211</width>
-        <height>20</height>
+        <x>0</x>
+        <y>0</y>
+        <width>375</width>
+        <height>91</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Output to the window</string>
-      </property>
-      <property name="checked">
+      <property name="widgetResizable">
        <bool>true</bool>
       </property>
-     </widget>
-     <widget class="QCheckBox" name="consoleOutput">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>35</y>
-        <width>211</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Output to the console</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="clipboardOutput">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>65</y>
-        <width>211</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Output to the clipboard</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="originalOutput">
-      <property name="geometry">
-       <rect>
-        <x>230</x>
-        <y>40</y>
-        <width>141</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Output original
-to console</string>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>-115</y>
+         <width>352</width>
+         <height>204</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QCheckBox" name="windowOutput">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Output to the window</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="consoleOutput">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Output to the console</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="clipboardOutput">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Output to the clipboard</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="originalOutput">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Output original to console</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="TS2ST_serverOutput">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Output to the TS2ST_Server</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="TS2ST_serverLineEdit"/>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="change_list_page">

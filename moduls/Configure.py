@@ -26,7 +26,9 @@ class Configure:
 				'window': '1',
 				'console': '0',
 				'clipboard': '0',
-				'original': '0'
+				'original': '0',
+				'ts2st_server': '0',
+				'ts2st_server_ip': ''
 			}
 			self.config['Change_list'] = {
 				'json': '{}'

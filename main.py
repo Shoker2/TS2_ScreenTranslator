@@ -2,11 +2,13 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from PIL import Image
 import keyboard
 import pyperclip
+import requests
 
 import traceback
 import sys
 import time
 import os
+import socket
 
 from moduls.Snip import SnippingWidget as Snipper
 from moduls.ScreenOutput import Ui_Output_Ui
@@ -46,6 +48,8 @@ class Settings(Ui_Settings):
 			config.update('Output', 'console', returned_settings['Output_console'])
 			config.update('Output', 'clipboard', returned_settings['Output_clipboard'])
 			config.update('Output', 'original', returned_settings['Output_original'])
+			config.update('Output', 'ts2st_server', returned_settings['Output_TS2ST_server'])
+			config.update('Output', 'ts2st_server_ip', returned_settings['Output_TS2ST_server_IP'])
 
 			config.update_dictionary('Change_list', 'json', returned_settings['correction'])
 
@@ -90,6 +94,8 @@ class SnippingWidget(Snipper):
 		Settings_UI.consoleOutput.setChecked(bool(int(config.read('Output', 'console'))))
 		Settings_UI.clipboardOutput.setChecked(bool(int(config.read('Output', 'clipboard'))))
 		Settings_UI.originalOutput.setChecked(bool(int(config.read('Output', 'original'))))
+		Settings_UI.TS2ST_serverOutput.setChecked(bool(int(config.read('Output', 'ts2st_server'))))
+		Settings_UI.TS2ST_serverLineEdit.setText(config.read('Output', 'ts2st_server_ip'))
 
 		Settings_UI.set_table_from_dictionary(config.read_dictionary('Change_list', 'json'))
 
@@ -114,7 +120,7 @@ def end_screen_shot():
 			translated = Translator.translate(text, Settings_UI.langs[config.read('General', 'to')], lang, config.read('General', 'translator'))
 		else:
 			translated = text
-	except (FileNotFoundError, ConnectionError):
+	except (FileNotFoundError, ConnectionError, requests.exceptions.ConnectionError):
 		logger.logging.error(traceback.format_exc().replace('"', '\''))
 		translated = 'None'	
 		open_screen = False
@@ -138,6 +144,22 @@ def end_screen_shot():
 	
 	if config.read('Output', 'clipboard') == '1':
 		pyperclip.copy(translated)
+	
+	if translated != None and config.read('Output', 'ts2st_server') == '1':
+		if config.read('Output', 'ts2st_server_ip').find(':') != -1:
+			config_ts2st_server_ip = config.read('Output', 'ts2st_server_ip').strip().split(':')
+			ts2st_server_ip = config_ts2st_server_ip[0]
+			ts2st_server_port = config_ts2st_server_ip[1]
+
+			try:
+				socket_send_msg(translated, ts2st_server_ip, int(ts2st_server_port))
+			except ValueError:
+				print('Not correct IP')
+			except socket.gaierror:
+				print('No TS2ST_Server found with this IP')
+			except Exception:
+				print('Connection Error')
+				logger.logging.error(traceback.format_exc().replace('"', '\''))
 
 	if open_screen:
 		Output_Ui.show()
@@ -175,6 +197,19 @@ def replace_from_list(string:str, dic: dict):
 		string = string.replace(key, dic[key])
 	
 	return string
+
+def socket_send_msg(msg, ip, port):
+	hostname = socket.gethostname()
+	my_local_ip = socket.gethostbyname(hostname)
+
+	server = (ip, 4000)
+		
+	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	s.bind((my_local_ip, port))
+
+	s.sendto(msg.encode('utf-8'), server)
+
+	s.close()
 
 @logger.logging_function
 def main():
