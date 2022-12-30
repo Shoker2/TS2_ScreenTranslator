@@ -109,10 +109,15 @@ TS2_ScreenTranslator.exe - саморазархивирующийся архив
 
 ### Output
 
+![image](https://user-images.githubusercontent.com/66993983/210096684-881e1e4a-66cf-4ced-a943-4b799f7ef3e4.png)
+
+![image](https://user-images.githubusercontent.com/66993983/210096640-d16c3bc2-7064-42a3-8558-9eb0bc376317.png)
+
 - Output to the window - Создаст окно с переведённым текстом на месте выделения
 - Output to the console - Выведет переведённый текст в консоль
 - Output to the clipboard - Скопирует переведённый текст в буфер обмена
 - Output original to console - Выведет отсканированный текст в консоль
+- Output to the TS2ST_Server - Отправит переведённый текст на [TS2_ScreenTranslator_Server](https://github.com/Shoker2/TS2_ScreenTranslator_Server/releases) (С помощью сокетов). Ниже есть поле ввода для IP [TS2_ScreenTranslator_Server](https://github.com/Shoker2/TS2_ScreenTranslator_Server/releases)
 
 ### Correction
 
