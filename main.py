@@ -110,14 +110,15 @@ def end_screen_shot():
 	try:
 		os.system('cls')
 
-		lang = str(Settings_UI.langs[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
-		text = ' '.join(text_recognition(image_path, [lang])) # Получаю текст с изображения
+		langs_easyocr = str(Settings_UI.langs_easyocr[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
+		langs_translate = str(Settings_UI.langs_translate[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
+		text = ' '.join(text_recognition(image_path, [langs_easyocr])) # Получаю текст с изображения
 
 		if config.read('Output', 'original') == '1':
 			print(f'\n{text}')
 		
 		if config.read('General', 'to') != config.read('General', 'from'): # Если перевод нужен на другой язык, то перевожу
-			translated = Translator.translate(text, Settings_UI.langs[config.read('General', 'to')], lang, config.read('General', 'translator'))
+			translated = Translator.translate(text, Settings_UI.langs_translate[config.read('General', 'to')], langs_translate, config.read('General', 'translator'))
 		else:
 			translated = text
 	except (FileNotFoundError, ConnectionError, requests.exceptions.ConnectionError):
@@ -213,45 +214,44 @@ def socket_send_msg(msg, ip, port):
 
 @logger.logging_function
 def main():
-	try:
-		sys.setrecursionlimit(1000)
+	sys.setrecursionlimit(1000)
 
-		if not os.path.isdir('./img'):
-			os.mkdir('./img')
-		
-		global image_path, bg_path, icon_path
-		image_path = './img/Image.png'
-		bg_path = './img/bg.png'
-		icon_path = './img/icon.png'
-		config_path = './config.ini'
-
-		global config
-		config = Configure(config_path)
-
-		global app, Output_Ui
-		app = QtWidgets.QApplication(sys.argv)
-		Output_Ui = Ui_Output_Ui(icon_path)
-
-		global Settings_win, Settings_UI
-		Settings_win = QtWidgets.QMainWindow()
-		Settings_UI = Settings()
-		Settings_UI.setupUi(Settings_win, icon_path)
-
-		global first_screenshot
-		first_screenshot = False # Нужно, чтобы не повторять область захвата, если ей нет
-		
-		while True:
-			time.sleep(0.05)
-			if keyboard.is_pressed(config.read('Shortcuts', 'select_area')):
-				select_area()
-				
-			elif keyboard.is_pressed(config.read('Shortcuts', 'repeat_area')) and first_screenshot:
-				repeat_area()
+	if not os.path.isdir('./img'):
+		os.mkdir('./img')
 	
+	global image_path, bg_path, icon_path
+	image_path = './img/Image.png'
+	bg_path = './img/bg.png'
+	icon_path = './img/icon.png'
+	config_path = './config.ini'
+
+	global config
+	config = Configure(config_path)
+
+	global app, Output_Ui
+	app = QtWidgets.QApplication(sys.argv)
+	Output_Ui = Ui_Output_Ui(icon_path)
+
+	global Settings_win, Settings_UI
+	Settings_win = QtWidgets.QMainWindow()
+	Settings_UI = Settings()
+	Settings_UI.setupUi(Settings_win, icon_path)
+
+	global first_screenshot
+	first_screenshot = False # Нужно, чтобы не повторять область захвата, если ей нет
+	
+	while True:
+		time.sleep(0.05)
+		if keyboard.is_pressed(config.read('Shortcuts', 'select_area')):
+			select_area()
+			
+		elif keyboard.is_pressed(config.read('Shortcuts', 'repeat_area')) and first_screenshot:
+			repeat_area()
+
+if __name__ == "__main__":
+	try:
+		main()
 	except KeyboardInterrupt:
 		pass
 	except Exception:
 		logger.logging.error(traceback.format_exc().replace('"', '\''))
-
-if __name__ == "__main__":
-	main()

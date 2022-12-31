@@ -8,3 +8,4 @@ Tray.py
 config.ini
 log_records.csv
 __pycache__
+moduls/__pycache__
