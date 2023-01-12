@@ -11,7 +11,8 @@ class Configure:
 			self.config['General'] = {
 				'from': 'English',
 				'to': 'Russian',
-				'translator': 'Google'
+				'translator': 'Google',
+				'recognitor': 'easyocr'
 			}
 			self.config['Font'] = {
 				'font': 'Calibri',

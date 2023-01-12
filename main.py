@@ -12,7 +12,8 @@ import socket
 
 from moduls.Snip import SnippingWidget as Snipper
 from moduls.ScreenOutput import Ui_Output_Ui
-from moduls.TextRecognitor import text_recognition
+from moduls.TextRecognitor import text_recognition_easyocr
+from moduls.TextRecognitor import text_recognition_tesseract
 from moduls.Translator import Translator
 from moduls.Settings import Ui_Settings
 from moduls.Configure import Configure
@@ -37,6 +38,7 @@ class Settings(Ui_Settings):
 			config.update('General', 'from', returned_settings['from']) # Сохраняю все выбранные значения в конфиг файл
 			config.update('General', 'to', returned_settings['to'])
 			config.update('General', 'translator', returned_settings['translator'])
+			config.update('General', 'recognitor', returned_settings['recognitor'])
 
 			config.update('Font', 'font', returned_settings['font'])
 			config.update('Font', 'font_size', str(returned_settings['font_size']))
@@ -83,6 +85,7 @@ class SnippingWidget(Snipper):
 		Settings_UI.fromComboBox.setCurrentText(config.read('General', 'from')) # Устанавливаю значения из конфиг файла
 		Settings_UI.toComboBox.setCurrentText(config.read('General', 'to'))
 		Settings_UI.translatorComboBox.setCurrentText(config.read('General', 'translator'))
+		Settings_UI.recognizerComboBox.setCurrentText(config.read('General', 'recognitor'))
 
 		Settings_UI.fontComboBox.setCurrentText(config.read('Font', 'font'))
 		Settings_UI.fontSpinBox.setValue(int(config.read('Font', 'font_size')))
@@ -111,8 +114,15 @@ def end_screen_shot():
 		os.system('cls')
 
 		langs_easyocr = str(Settings_UI.langs_easyocr[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
+		langs_tesseract = str(Settings_UI.langs_tesseract[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
 		langs_translate = str(Settings_UI.langs_translate[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
-		text = ' '.join(text_recognition(image_path, [langs_easyocr])) # Получаю текст с изображения
+
+		if config.read('General', 'recognitor') == 'easyocr':
+			text = ' '.join(text_recognition_easyocr(image_path, [langs_easyocr])) # Получаю текст с изображения
+		elif config.read('General', 'recognitor') == 'tesseract':
+			text = ' '.join(text_recognition_tesseract(image_path, [langs_tesseract])) # Получаю текст с изображения
+
+		text = replace_from_list(text, config.read_dictionary('Change_list', 'json'))
 
 		if config.read('Output', 'original') == '1':
 			print(f'\n{text}')

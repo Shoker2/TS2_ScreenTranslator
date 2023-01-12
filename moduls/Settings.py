@@ -18,7 +18,6 @@ class Ui_Settings(object):
 		'Azerbaijani':'az',
 		'Belarusian':'be',
 		'Bulgarian':'bg',
-		'Bhojpuri':'bho',
 		'Bengali':'bn',
 		'Bosnian':'bs',
 		'Chinese (simplified)':'zh-CN',
@@ -33,7 +32,6 @@ class Ui_Settings(object):
 		'Persian':'fa',
 		'French':'fr',
 		'Irish':'ga',
-		'Konkani':'gom',
 		'Hindi':'hi',
 		'Croatian':'hr',
 		'Hungarian':'hu',
@@ -46,7 +44,6 @@ class Ui_Settings(object):
 		'Latin':'la',
 		'Lithuanian':'lt',
 		'Latvian':'lv',
-		'Maithili':'mai',
 		'Maori':'mi',
 		'Mongolian':'mn',
 		'Marathi':'mr',
@@ -83,7 +80,6 @@ class Ui_Settings(object):
 		'Azerbaijani':'az',
 		'Belarusian':'be',
 		'Bulgarian':'bg',
-		'Bhojpuri':'bho',
 		'Bengali':'bn',
 		'Bosnian':'bs',
 		'Chinese (simplified)':'ch_sim',
@@ -98,7 +94,6 @@ class Ui_Settings(object):
 		'Persian':'fa',
 		'French':'fr',
 		'Irish':'ga',
-		'Konkani':'gom',
 		'Hindi':'hi',
 		'Croatian':'hr',
 		'Hungarian':'hu',
@@ -111,7 +106,6 @@ class Ui_Settings(object):
 		'Latin':'la',
 		'Lithuanian':'lt',
 		'Latvian':'lv',
-		'Maithili':'mai',
 		'Maori':'mi',
 		'Mongolian':'mn',
 		'Marathi':'mr',
@@ -141,6 +135,70 @@ class Ui_Settings(object):
 		'Vietnamese':'vi'
 		}
 
+	langs_tesseract = {
+		'Afrikaans':'afr',
+		'Arabic':'amh',
+		'Assamese':'asm',
+		'Azerbaijani':'aze',
+		'Belarusian':'bel',
+		'Bulgarian':'bul',
+		'Bengali':'ben',
+		'Bosnian':'bos',
+		'Chinese (simplified)':'chi_sim',
+		'Chinese (traditional)':'chi_tra',
+		'Czech':'ces',
+		'Welsh':'cym',
+		'Danish':'dan',
+		'German':'deu',
+		'English':'eng',
+		'Spanish':'spa',
+		'Estonian':'est',
+		'Persian':'fas',
+		'French':'fra',
+		'Irish':'gle',
+		'Hindi':'hin',
+		'Croatian':'hrv',
+		'Hungarian':'hun',
+		'Indonesian':'ind',
+		'Icelandic':'isl',
+		'Italian':'ita',
+		'Japanese':'jpn',
+		'Kannada':'kan',
+		'Korean':'kor',
+		'Latin':'lat',
+		'Lithuanian':'lit',
+		'Latvian':'lav',
+		'Maori':'mri',
+		'Mongolian':'mon',
+		'Marathi':'mar',
+		'Malay':'msa',
+		'Maltese':'mlt',
+		'Nepali':'nep',
+		'Dutch':'nld',
+		'Norwegian':'nor',
+		'Polish':'pol',
+		'Portuguese':'por',
+		'Romanian':'ron',
+		'Russian':'rus',
+		'Serbian':'srp',
+		'Slovak':'slk',
+		'Slovenian':'slv',
+		'Albanian':'sqi',
+		'Swedish':'swe',
+		'Swahili':'swa',
+		'Tamil':'tam',
+		'Telugu':'tel',
+		'Thai':'tha',
+		'Tajik':'tgk',
+		'Turkish':'tur',
+		'Uyghur':'uig',
+		'Urdu':'urd',
+		'Uzbek':'uzb',
+		'Vietnamese':'vie'
+		}
+
+	recognitors = ['easyocr', 'tesseract']
+
 	def setupUi(self, Settings, icon_path=''):
 		if icon_path != '':
 			Settings.setWindowIcon(QtGui.QIcon(icon_path))
@@ -159,39 +217,83 @@ class Ui_Settings(object):
 		self.tabWidget.setObjectName("tabWidget")
 		self.general_page = QtWidgets.QWidget()
 		self.general_page.setObjectName("general_page")
-		self.Font_label_2 = QtWidgets.QLabel(self.general_page)
-		self.Font_label_2.setGeometry(QtCore.QRect(10, 10, 41, 31))
+		self.scrollArea_General = QtWidgets.QScrollArea(self.general_page)
+		self.scrollArea_General.setGeometry(QtCore.QRect(0, 0, Settings.size().width() - 5, Settings.size().height() - 24))
+		self.scrollArea_General.setWidgetResizable(True)
+		self.scrollArea_General.setObjectName("scrollArea_General")
+		self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
+		self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 352, 180))
+		self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
+		self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
+		self.verticalLayout_2.setObjectName("verticalLayout_2")
+		self.horizontalLayout = QtWidgets.QHBoxLayout()
+		self.horizontalLayout.setContentsMargins(0, -1, -1, -1)
+		self.horizontalLayout.setObjectName("horizontalLayout")
+		self.Font_label_2 = QtWidgets.QLabel(self.scrollAreaWidgetContents_2)
 		font = QtGui.QFont()
 		font.setPointSize(10)
 		self.Font_label_2.setFont(font)
 		self.Font_label_2.setObjectName("Font_label_2")
-		self.fromComboBox = QtWidgets.QComboBox(self.general_page)
-		self.fromComboBox.setGeometry(QtCore.QRect(60, 16, 111, 22))
+		self.horizontalLayout.addWidget(self.Font_label_2)
+		self.fromComboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents_2)
 		self.fromComboBox.setObjectName("fromComboBox")
-		self.Font_label_3 = QtWidgets.QLabel(self.general_page)
-		self.Font_label_3.setGeometry(QtCore.QRect(220, 10, 31, 31))
+		self.horizontalLayout.addWidget(self.fromComboBox)
+		self.verticalLayout_2.addLayout(self.horizontalLayout)
+		self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+		self.horizontalLayout_2.setContentsMargins(0, -1, -1, -1)
+		self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+		self.Font_label_3 = QtWidgets.QLabel(self.scrollAreaWidgetContents_2)
 		font = QtGui.QFont()
 		font.setPointSize(10)
 		self.Font_label_3.setFont(font)
 		self.Font_label_3.setObjectName("Font_label_3")
-		self.toComboBox = QtWidgets.QComboBox(self.general_page)
-		self.toComboBox.setGeometry(QtCore.QRect(255, 16, 110, 22))
+		self.horizontalLayout_2.addWidget(self.Font_label_3)
+		self.toComboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents_2)
 		self.toComboBox.setObjectName("toComboBox")
-		self.Font_label_4 = QtWidgets.QLabel(self.general_page)
-		self.Font_label_4.setGeometry(QtCore.QRect(10, 55, 91, 31))
+		self.horizontalLayout_2.addWidget(self.toComboBox)
+		self.verticalLayout_2.addLayout(self.horizontalLayout_2)
+		self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+		self.horizontalLayout_4.setContentsMargins(0, -1, -1, -1)
+		self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+		self.Font_label_4 = QtWidgets.QLabel(self.scrollAreaWidgetContents_2)
 		font = QtGui.QFont()
 		font.setPointSize(10)
 		self.Font_label_4.setFont(font)
 		self.Font_label_4.setObjectName("Font_label_4")
-		self.translatorComboBox = QtWidgets.QComboBox(self.general_page)
-		self.translatorComboBox.setGeometry(QtCore.QRect(90, 58, 151, 26))
+		self.horizontalLayout_4.addWidget(self.Font_label_4)
+		self.translatorComboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents_2)
 		font = QtGui.QFont()
 		font.setPointSize(9)
 		self.translatorComboBox.setFont(font)
 		self.translatorComboBox.setObjectName("translatorComboBox")
-		self.pushButton = QtWidgets.QPushButton(self.general_page)
-		self.pushButton.setGeometry(QtCore.QRect(275, 57, 93, 28))
+		self.horizontalLayout_4.addWidget(self.translatorComboBox)
+		self.verticalLayout_2.addLayout(self.horizontalLayout_4)
+		self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
+		self.horizontalLayout_6.setContentsMargins(0, -1, -1, -1)
+		self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+		self.Font_label_8 = QtWidgets.QLabel(self.scrollAreaWidgetContents_2)
+		font = QtGui.QFont()
+		font.setPointSize(10)
+		self.Font_label_8.setFont(font)
+		self.Font_label_8.setObjectName("Font_label_8")
+		self.horizontalLayout_6.addWidget(self.Font_label_8)
+		self.recognizerComboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents_2)
+		font = QtGui.QFont()
+		font.setPointSize(9)
+		self.recognizerComboBox.setFont(font)
+		self.recognizerComboBox.setObjectName("recognizerComboBox")
+		self.horizontalLayout_6.addWidget(self.recognizerComboBox)
+		self.verticalLayout_2.addLayout(self.horizontalLayout_6)
+		self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
+		self.horizontalLayout_5.setContentsMargins(0, -1, -1, -1)
+		self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+		spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+		self.horizontalLayout_5.addItem(spacerItem)
+		self.pushButton = QtWidgets.QPushButton(self.scrollAreaWidgetContents_2)
 		self.pushButton.setObjectName("pushButton")
+		self.horizontalLayout_5.addWidget(self.pushButton)
+		self.verticalLayout_2.addLayout(self.horizontalLayout_5)
+		self.scrollArea_General.setWidget(self.scrollAreaWidgetContents_2)
 		self.tabWidget.addTab(self.general_page, "")
 		self.tab = QtWidgets.QWidget()
 		self.tab.setObjectName("tab")
@@ -287,7 +389,7 @@ class Ui_Settings(object):
 		self.change_list_page = QtWidgets.QWidget()
 		self.change_list_page.setObjectName("change_list_page")
 		self.tableWidget = QtWidgets.QTableWidget(self.change_list_page)
-		self.tableWidget.setGeometry(QtCore.QRect(0, 0, 346, 91))
+		self.tableWidget.setGeometry(QtCore.QRect(0, 0, 365, 91))
 		self.tableWidget.setObjectName("tableWidget")
 		self.tableWidget.setColumnCount(2)
 		self.tableWidget.setRowCount(1)
@@ -304,7 +406,7 @@ class Ui_Settings(object):
 		self.pushButton.clicked.connect(lambda: self.apply(Settings))
 		self.tableWidget.cellChanged.connect(lambda: self.table_changed())
 
-		cell_width = int((Settings.size().width() - 40)/2)
+		cell_width = int((Settings.size().width() - 60)/2)
 		self.tableWidget.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 		self.tableWidget.setColumnWidth(0, cell_width)
 		self.tableWidget.setColumnWidth(1, cell_width)
@@ -320,6 +422,7 @@ class Ui_Settings(object):
 		self.Font_label_2.setText("From")
 		self.Font_label_3.setText("To")
 		self.Font_label_4.setText("Translator")
+		self.Font_label_8.setText("Recognizer")
 		self.pushButton.setText("Apply")
 		self.tabWidget.setTabText(self.tabWidget.indexOf(self.general_page), "General")
 		self.Font_label.setText("Font")
@@ -363,7 +466,6 @@ class Ui_Settings(object):
 	def set_table_from_dictionary(self, dic: dict):
 		row_count = len(dic)
 
-
 		if row_count > 0:
 			self.tableWidget.setRowCount(row_count)
 			
@@ -398,6 +500,7 @@ class Ui_Settings(object):
 		get['from'] = self.fromComboBox.currentText()
 		get['to'] = self.toComboBox.currentText()
 		get['translator'] = self.translatorComboBox.currentText()
+		get['recognitor'] = self.recognizerComboBox.currentText()
 		get['font'] = self.fontComboBox.currentText()
 		get['font_size'] = self.fontSpinBox.value()
 
@@ -462,6 +565,9 @@ class Ui_Settings(object):
 		for lang in self.langs_easyocr.keys():
 			self.toComboBox.addItem(lang)
 			self.fromComboBox.addItem(lang)
+		
+		for recognizer in self.recognitors:
+			self.recognizerComboBox.addItem(recognizer)
 
 	def apply(self, Settings):
 		Settings.hide()

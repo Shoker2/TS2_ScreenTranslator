@@ -36,7 +36,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>4</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
@@ -282,7 +282,7 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>-115</y>
+         <y>0</y>
          <width>352</width>
          <height>204</height>
         </rect>
@@ -377,9 +377,22 @@
         <height>91</height>
        </rect>
       </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
       <row>
        <property name="text">
         <string>1</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>New Row</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>3</string>
        </property>
       </row>
       <column>
