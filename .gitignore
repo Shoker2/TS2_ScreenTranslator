@@ -1,5 +1,7 @@
 venv/
 img/
+tesseract/
+additions files/
 Additional Files/
 auto-py-to-exe.json
 !img/icon.png

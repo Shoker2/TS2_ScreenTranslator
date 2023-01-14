@@ -89,7 +89,7 @@ TS2_ScreenTranslator.exe - саморазархивирующийся архив
 - From - С какого языка переводить текст
 - To - На какой язык переводить текст
 - Translator - Переводчик
-- Recognizer - Выбор распознователя текста (Чтобы работал tesseract, нужно [скачать его отдельно и установить в папку приложения](https://github.com/UB-Mannheim/tesseract/wiki))
+- Recognizer - Выбор распознователя текста (Чтобы работали другие языки tesseract, нужно [скачать языки отдельно (Assets -> tesseract_langs.zip)](https://github.com/Shoker2/TS2_ScreenTranslator/releases) и переместить все фалы в папку "tesseract" -> "tessdata" внутри папки приложения)
 - Apply - Кнопка для применения настроек
 
 ### Font
