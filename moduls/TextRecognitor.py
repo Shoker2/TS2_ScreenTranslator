@@ -12,9 +12,12 @@ def text_recognition_easyocr(file_path:str, langs:list = ["en", "ru"]):
 
 def text_recognition_tesseract(file_path:str, langs:list = ["en"]):
 	img = Image.open(file_path)
-	pytesseract.pytesseract.tesseract_cmd = os.path.abspath('tesseract\\tesseract.exe')
-	result = pytesseract.image_to_string(img, lang = langs[0])
-	
+	try:
+		pytesseract.pytesseract.tesseract_cmd = os.path.abspath('tesseract\\tesseract.exe')
+		result = pytesseract.image_to_string(img, lang = langs[0])
+	except pytesseract.pytesseract.TesseractError:
+		return None
+
 	return result
 
 if __name__ == '__main__':

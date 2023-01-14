@@ -9,6 +9,7 @@ import sys
 import time
 import os
 import socket
+import urllib.request
 
 from moduls.Snip import SnippingWidget as Snipper
 from moduls.ScreenOutput import Ui_Output_Ui
@@ -113,14 +114,31 @@ def end_screen_shot():
 	try:
 		os.system('cls')
 
-		langs_easyocr = str(Settings_UI.langs_easyocr[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
-		langs_tesseract = str(Settings_UI.langs_tesseract[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
 		langs_translate = str(Settings_UI.langs_translate[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
 
 		if config.read('General', 'recognitor') == 'easyocr':
+			langs_easyocr = str(Settings_UI.langs_easyocr[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
 			text = ' '.join(text_recognition_easyocr(image_path, [langs_easyocr])) # Получаю текст с изображения
+
 		elif config.read('General', 'recognitor') == 'tesseract':
-			text = ' '.join(text_recognition_tesseract(image_path, [langs_tesseract])) # Получаю текст с изображения
+			langs_tesseract = str(Settings_UI.langs_tesseract[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
+			
+			file = f'{langs_tesseract}.traineddata'
+			destination = f'./tesseract/tessdata/{file}'
+
+			text = text_recognition_tesseract(image_path, [langs_tesseract]) # Получаю текст с изображения в виде списка (Если ошибка файла, то возвращяет None)
+
+			if text == None: # Если файла нет или файл с ошибкой, то скачивает его
+				print(f'downloading {file}\nWait please')
+
+				url = f'https://github.com/tesseract-ocr/tessdata/raw/4.00/{file}'
+
+				urllib.request.urlretrieve(url, destination)
+				os.system('cls')
+			
+				text = text_recognition_tesseract(image_path, [langs_tesseract]) # Получаю текст с изображения в виде списка
+			
+			text = ' '.join(text)
 
 		text = replace_from_list(text, config.read_dictionary('Change_list', 'json'))
 
