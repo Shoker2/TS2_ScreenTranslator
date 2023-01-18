@@ -36,7 +36,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>3</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
@@ -282,9 +282,9 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>0</y>
+         <y>-83</y>
          <width>352</width>
-         <height>204</height>
+         <height>236</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -336,6 +336,21 @@
           </property>
           <property name="text">
            <string>Output original to console</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="startNewLine">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Start on a new line</string>
           </property>
           <property name="checked">
            <bool>false</bool>

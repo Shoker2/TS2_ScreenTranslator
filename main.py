@@ -51,6 +51,7 @@ class Settings(Ui_Settings):
 			config.update('Output', 'console', returned_settings['Output_console'])
 			config.update('Output', 'clipboard', returned_settings['Output_clipboard'])
 			config.update('Output', 'original', returned_settings['Output_original'])
+			config.update('Output', 'start_on_new_line', returned_settings['start_on_new_line'])
 			config.update('Output', 'ts2st_server', returned_settings['Output_TS2ST_server'])
 			config.update('Output', 'ts2st_server_ip', returned_settings['Output_TS2ST_server_IP'])
 
@@ -98,6 +99,7 @@ class SnippingWidget(Snipper):
 		Settings_UI.consoleOutput.setChecked(bool(int(config.read('Output', 'console'))))
 		Settings_UI.clipboardOutput.setChecked(bool(int(config.read('Output', 'clipboard'))))
 		Settings_UI.originalOutput.setChecked(bool(int(config.read('Output', 'original'))))
+		Settings_UI.startNewLine.setChecked(bool(int(config.read('Output', 'start_on_new_line'))))
 		Settings_UI.TS2ST_serverOutput.setChecked(bool(int(config.read('Output', 'ts2st_server'))))
 		Settings_UI.TS2ST_serverLineEdit.setText(config.read('Output', 'ts2st_server_ip'))
 
@@ -118,7 +120,11 @@ def end_screen_shot():
 
 		if config.read('General', 'recognitor') == 'easyocr':
 			langs_easyocr = str(Settings_UI.langs_easyocr[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
-			text = ' '.join(text_recognition_easyocr(image_path, [langs_easyocr])) # Получаю текст с изображения
+			
+			if config.read('Output', 'start_on_new_line') == '1':
+				text = '\n'.join(text_recognition_easyocr(image_path, [langs_easyocr])) # Получаю текст с изображения
+			else:
+				text = ' '.join(text_recognition_easyocr(image_path, [langs_easyocr])) # Получаю текст с изображения
 
 		elif config.read('General', 'recognitor') == 'tesseract':
 			langs_tesseract = str(Settings_UI.langs_tesseract[config.read('General', 'from')]) # Получаю язык для распознования текста с картинки
@@ -137,8 +143,10 @@ def end_screen_shot():
 				os.system('cls')
 			
 				text = text_recognition_tesseract(image_path, [langs_tesseract]) # Получаю текст с изображения в виде списка
-			
-			text = ' '.join(text)
+
+			text = str(''.join(text))
+			if config.read('Output', 'start_on_new_line') != '1':
+				text = text.replace('\n', ' ')
 
 		text = replace_from_list(text, config.read_dictionary('Change_list', 'json'))
 

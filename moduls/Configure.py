@@ -28,6 +28,7 @@ class Configure:
 				'console': '0',
 				'clipboard': '0',
 				'original': '0',
+				'start_on_new_line': '0',
 				'ts2st_server': '0',
 				'ts2st_server_ip': ''
 			}
